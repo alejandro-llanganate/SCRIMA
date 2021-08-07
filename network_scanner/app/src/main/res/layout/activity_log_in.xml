@@ -19,7 +19,7 @@
         app:layout_constraintVertical_bias="0.279">
 
         <EditText
-            android:id="@+id/editTextTextEmailAddress2"
+            android:id="@+id/input_login_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -27,7 +27,7 @@
             android:inputType="textEmailAddress" />
 
         <EditText
-            android:id="@+id/editTextTextPassword"
+            android:id="@+id/input_login_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"

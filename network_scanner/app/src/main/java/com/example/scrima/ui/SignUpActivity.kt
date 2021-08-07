@@ -42,11 +42,8 @@ class SignUpActivity : AppCompatActivity() {
                             userPasswordConfirmation.text.toString()
                         ).addOnCompleteListener{
                             if(it.isSuccessful){
-                                openActivityWithoutParams(this, HomeActivity::class.java, arrayListOf(
-                                    Pair("email", User(null, userEmail.text.toString(), userPassword.text.toString())),
-                                    Pair("type", ProviderType.BASIC)
-                                ))
                                 showSimpleDialog("Inicio de sesión", "Se ha registrado correctamente")
+                                openActivity(this, LogInActivity::class.java)
                             }else{
                                 showSimpleToast("No se ha podido crear este usuario")
                             }
@@ -59,6 +56,14 @@ class SignUpActivity : AppCompatActivity() {
                     showSimpleToast("Ingrese los datos requeridos")
                 }
             }
+    }
+
+    fun openActivity( context: Context, classRef: Class<*>) {
+            val intentExplicito = Intent(
+                context,
+                classRef
+            )
+            startActivity(intentExplicito)
     }
 
     fun showSimpleDialog(title: String, message: String){
@@ -81,28 +86,4 @@ class SignUpActivity : AppCompatActivity() {
         ).show()
     }
 
-    fun onClickToOpenActivityWithParams(idButton: Int, context: Context, classRef: Class<*>) {
-        findViewById<Button>(idButton).setOnClickListener {
-            val intent = Intent(
-                context,
-                classRef
-            )
-            startActivity(intent)
-        }
-    }
-
-    fun openActivityWithoutParams(context: Context, classReference: Class<*>, params:  ArrayList<Pair<String, Any>>) {
-        val intent = Intent(
-            context,
-            classReference
-        )
-        params.forEach {
-            param ->
-            var (key, value) = param
-
-            if(value is User)
-                intent.putExtra(key, value)
-        }
-        startActivity(intent)
-    }
 }
