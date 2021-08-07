@@ -11,6 +11,11 @@ import androidx.appcompat.app.AlertDialog
 import com.example.scrima.R
 import com.example.scrima.entities.User
 import com.example.scrima.general.Validators
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
@@ -20,34 +25,68 @@ enum class ProviderType {
 
 class LogInActivity : AppCompatActivity() {
 
+    private val GOOGLE_SIGN_IN = 200
+
     // Initialize Firebase Auth
-    val auth = Firebase.auth
+    var auth = Firebase.auth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_log_in)
         onClickToOpenActivity(R.id.btn_main_signup, this, SignUpActivity::class.java)
+
+        // User input
+        val userEmail = findViewById<EditText>(R.id.input_login_email)
+        val userPassword = findViewById<EditText>(R.id.input_login_password)
+
+        // Login with email and password
         findViewById<Button>(R.id.btn_main_login)
-        .setOnClickListener {
-            // Get user inputs
-            val userEmail = findViewById<EditText>(R.id.input_login_email)
-            val userPassword = findViewById<EditText>(R.id.input_login_password)
-            if(Validators.validateNotBlankInputs(arrayListOf(userEmail, userPassword))){
-                    auth.signInWithEmailAndPassword(
-                        userEmail.text.toString(),
-                        userPassword.text.toString()
-                    ).addOnCompleteListener{
-                        if(it.isSuccessful){
-                            openActivityWithParams(this, HomeActivity::class.java, arrayListOf(
-                                Pair("user", User(userEmail.text.toString(), userPassword.text.toString())),
-                                Pair("type", "ProviderType.BASIC")
-                            ))
-                        }else{
-                            showSimpleToast("No se ha podido iniciar sesión correctamente")
-                        }
-                    }
-            }else {
-                showSimpleToast("Ingrese los datos requeridos")
+            .setOnClickListener {
+                if(Validators.validateNotBlankInputs(arrayListOf(userEmail, userPassword))){
+                    signInWithEmailPasswordAuth(auth,userEmail.text.toString(), userPassword.text.toString())
+                }
+                else {
+                    showSimpleToast("Ingrese los datos requeridos")
+                }
+            }
+
+        // Login with Google Auth
+        findViewById<Button>(R.id.btn_google_signin)
+            .setOnClickListener {
+                if(Validators.validateNotBlankInputs(arrayListOf(userEmail, userPassword))){
+                    signInWithUserGoogleAcount(auth,userEmail.text.toString(), userPassword.text.toString())
+                }
+                else {
+                    showSimpleToast("Ingrese los datos requeridos")
+                }
+            }
+    }
+
+    fun signInWithUserGoogleAcount(auth: FirebaseAuth, userEmail: String, userPassword: String){
+        // Configure Google Sign In
+        val googleConf = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+        val googleClient = GoogleSignIn.getClient(this, googleConf)
+        googleClient.signOut()
+        startActivityForResult(googleClient.signInIntent, GOOGLE_SIGN_IN)
+    }
+
+    fun signInWithEmailPasswordAuth(auth: FirebaseAuth, userEmail: String, userPassword: String) {
+        auth.signInWithEmailAndPassword(
+            userEmail,
+            userPassword
+        ).addOnCompleteListener {
+            if (it.isSuccessful) {
+                openActivityWithParams(
+                    this, HomeActivity::class.java, arrayListOf(
+                        Pair("user", User(userEmail, userPassword)),
+                        Pair("type", "ProviderType.BASIC")
+                    )
+                )
+            } else {
+                showSimpleToast("No se ha podido iniciar sesión correctamente")
             }
         }
     }
@@ -87,4 +126,33 @@ class LogInActivity : AppCompatActivity() {
         }
         startActivity(intent)
     }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode == GOOGLE_SIGN_IN){
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+            try {
+                val account = task.getResult(ApiException::class.java)
+                if(account != null){
+                    val credential = GoogleAuthProvider.getCredential(account.idToken, null)
+                    auth.signInWithCredential(credential)
+                        .addOnCompleteListener{
+                            if(it.isSuccessful){
+                                openActivityWithParams(
+                                    this, HomeActivity::class.java, arrayListOf(
+                                        Pair("user", User(account.email, null)),
+                                        Pair("type", "ProviderType.GOOGLE")
+                                    )
+                                )
+                            }else{
+                                showSimpleToast("No ha podido iniciar sesión con Google")
+                            }
+                        }
+                }
+            }catch (e: ApiException){
+                showSimpleToast("No ha podido iniciar sesión con Google")
+            }
+        }
+    }
+
 }
