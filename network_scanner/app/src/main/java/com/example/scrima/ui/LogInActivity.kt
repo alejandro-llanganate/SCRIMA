@@ -14,6 +14,10 @@ import com.example.scrima.general.Validators
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
+enum class ProviderType {
+    BASIC
+}
+
 class LogInActivity : AppCompatActivity() {
 
     // Initialize Firebase Auth
@@ -35,8 +39,8 @@ class LogInActivity : AppCompatActivity() {
                     ).addOnCompleteListener{
                         if(it.isSuccessful){
                             openActivityWithParams(this, HomeActivity::class.java, arrayListOf(
-                                Pair("email", User(null, userEmail.text.toString(), userPassword.text.toString())),
-                                Pair("type", ProviderType.BASIC)
+                                Pair("user", User(userEmail.text.toString(), userPassword.text.toString())),
+                                Pair("type", "ProviderType.BASIC")
                             ))
                         }else{
                             showSimpleToast("No se ha podido iniciar sesión correctamente")
@@ -75,8 +79,11 @@ class LogInActivity : AppCompatActivity() {
                 param ->
             var (key, value) = param
 
-            if(value is User)
+            if(value is User){
                 intent.putExtra(key, value)
+            }else if(value is String){
+                intent.putExtra(key, value)
+            }
         }
         startActivity(intent)
     }

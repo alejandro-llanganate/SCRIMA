@@ -17,9 +17,6 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import java.io.Serializable
 
-enum class ProviderType {
-    BASIC
-}
 
 class SignUpActivity : AppCompatActivity() {
 
