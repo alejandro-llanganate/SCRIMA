@@ -14,6 +14,7 @@ import com.example.scrima.general.Validators
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
+import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
@@ -27,23 +28,20 @@ class LogInActivity : AppCompatActivity() {
 
     private val GOOGLE_SIGN_IN = 200
 
-    // Initialize Firebase Auth
-    var auth = Firebase.auth
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        FirebaseApp.initializeApp(this)
         setContentView(R.layout.activity_log_in)
         onClickToOpenActivity(R.id.btn_main_signup, this, SignUpActivity::class.java)
 
         // User input
         val userEmail = findViewById<EditText>(R.id.input_login_email)
         val userPassword = findViewById<EditText>(R.id.input_login_password)
-
         // Login with email and password
         findViewById<Button>(R.id.btn_main_login)
             .setOnClickListener {
                 if(Validators.validateNotBlankInputs(arrayListOf(userEmail, userPassword))){
-                    signInWithEmailPasswordAuth(auth,userEmail.text.toString(), userPassword.text.toString())
+                    signInWithEmailPasswordAuth(userEmail.text.toString(), userPassword.text.toString())
                 }
                 else {
                     showSimpleToast("Ingrese los datos requeridos")
@@ -53,19 +51,15 @@ class LogInActivity : AppCompatActivity() {
         // Login with Google Auth
         findViewById<Button>(R.id.btn_google_signin)
             .setOnClickListener {
-                if(Validators.validateNotBlankInputs(arrayListOf(userEmail, userPassword))){
-                    signInWithUserGoogleAcount(auth,userEmail.text.toString(), userPassword.text.toString())
-                }
-                else {
-                    showSimpleToast("Ingrese los datos requeridos")
-                }
+               signInWithUserGoogleAcount(userEmail.text.toString(), userPassword.text.toString())
             }
     }
 
-    fun signInWithUserGoogleAcount(auth: FirebaseAuth, userEmail: String, userPassword: String){
+    fun signInWithUserGoogleAcount(userEmail: String, userPassword: String){
+        FirebaseApp.initializeApp(this)
         // Configure Google Sign In
         val googleConf = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestIdToken("378779346163-67pme07hml2vmhlrgekv5j1buklbvvr4.apps.googleusercontent.com")
             .requestEmail()
             .build()
         val googleClient = GoogleSignIn.getClient(this, googleConf)
@@ -73,8 +67,9 @@ class LogInActivity : AppCompatActivity() {
         startActivityForResult(googleClient.signInIntent, GOOGLE_SIGN_IN)
     }
 
-    fun signInWithEmailPasswordAuth(auth: FirebaseAuth, userEmail: String, userPassword: String) {
-        auth.signInWithEmailAndPassword(
+    fun signInWithEmailPasswordAuth(userEmail: String, userPassword: String) {
+        FirebaseApp.initializeApp(this)
+        FirebaseAuth.getInstance().signInWithEmailAndPassword(
             userEmail,
             userPassword
         ).addOnCompleteListener {
@@ -135,7 +130,7 @@ class LogInActivity : AppCompatActivity() {
                 val account = task.getResult(ApiException::class.java)
                 if(account != null){
                     val credential = GoogleAuthProvider.getCredential(account.idToken, null)
-                    auth.signInWithCredential(credential)
+                    FirebaseAuth.getInstance().signInWithCredential(credential)
                         .addOnCompleteListener{
                             if(it.isSuccessful){
                                 openActivityWithParams(

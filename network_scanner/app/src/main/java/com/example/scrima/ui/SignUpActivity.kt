@@ -13,6 +13,8 @@ import androidx.appcompat.app.AlertDialog
 import com.example.scrima.R
 import com.example.scrima.entities.User
 import com.example.scrima.general.Validators
+import com.google.firebase.FirebaseApp
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import java.io.Serializable
@@ -20,12 +22,14 @@ import java.io.Serializable
 
 class SignUpActivity : AppCompatActivity() {
 
-    // Initialize Firebase Auth
-    val auth = Firebase.auth
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        FirebaseApp.initializeApp(this)
         setContentView(R.layout.activity_sign_up)
+        // Initialize Firebase Auth
+        val auth = FirebaseAuth.getInstance()
         findViewById<Button>(R.id.btn_signup)
             .setOnClickListener {
                 // Get user inputs
