@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.example.scrima.ui.LogInActivity
 
 class Settings  : AppCompatActivity()  {
@@ -15,7 +16,6 @@ class Settings  : AppCompatActivity()  {
     }
 
     companion object {
-
     }
 
     fun onClickToOpenActivity(idButton: Int, context: Context, classRef: Class<LogInActivity>){
