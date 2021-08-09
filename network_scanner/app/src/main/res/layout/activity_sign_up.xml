@@ -7,8 +7,9 @@
     tools:context=".ui.SignUpActivity">
 
     <LinearLayout
-        android:layout_width="305dp"
-        android:layout_height="567dp"
+        android:id="@+id/linearLayout2"
+        android:layout_width="312dp"
+        android:layout_height="377dp"
         android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -17,25 +18,46 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <EditText
+            android:id="@+id/editTextTextPersonName2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:ems="10"
+            android:hint="Nombres"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/editTextTextPersonName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:ems="10"
+            android:hint="Apellidos"
+            android:inputType="textPersonName" />
+
+        <EditText
             android:id="@+id/input_signup_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
             android:ems="10"
-            android:hint="Correo"
+            android:hint="Correo electrónico"
             android:inputType="textEmailAddress" />
 
         <EditText
             android:id="@+id/input_signup_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
             android:ems="10"
-            android:hint="Contraseña"
+            android:hint="Ingrese una contraseña"
             android:inputType="textPassword" />
 
         <EditText
             android:id="@+id/input_signup_repeat_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="35dp"
             android:ems="10"
             android:hint="Repita la contraseña"
             android:inputType="textPassword" />
@@ -44,6 +66,22 @@
             android:id="@+id/btn_signup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Registrarse" />
+            android:text="Registrarse"
+            android:backgroundTint="@color/bluebutton"
+            />
+
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:text="Completa los siguientes campos."
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>

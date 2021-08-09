@@ -22,12 +22,11 @@ import java.io.Serializable
 
 class SignUpActivity : AppCompatActivity() {
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         FirebaseApp.initializeApp(this)
         setContentView(R.layout.activity_sign_up)
+        setTitle("Crear una cuenta")
         // Initialize Firebase Auth
         val auth = FirebaseAuth.getInstance()
         findViewById<Button>(R.id.btn_signup)
@@ -86,5 +85,4 @@ class SignUpActivity : AppCompatActivity() {
             Toast.LENGTH_SHORT
         ).show()
     }
-
 }
