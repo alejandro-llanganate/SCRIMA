@@ -9,17 +9,28 @@
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
+        android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Profile"
+        android:text="Escaneos registrados"
         android:textAlignment="center"
         android:textColor="@color/black"
-        android:textSize="32sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.069" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/listRecordsRecyclerView"
+        android:layout_width="351dp"
+        android:layout_height="545dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        app:layout_constraintVertical_bias="0.355" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
