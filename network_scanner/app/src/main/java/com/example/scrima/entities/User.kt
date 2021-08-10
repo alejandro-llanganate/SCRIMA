@@ -34,6 +34,4 @@ class User (
             return arrayOfNulls(size)
         }
     }
-
-
 }
