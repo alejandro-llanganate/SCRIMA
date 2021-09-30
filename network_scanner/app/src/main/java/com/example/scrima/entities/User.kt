@@ -5,11 +5,15 @@ import android.os.Parcelable
 
 class User (
     val email : String?,
-    val password : String?,
+    val name : String?,
+    val lastname: String?,
+    val countScans: Int?
         ) :Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),
         parcel.readString(),
+        parcel.readString(),
+        parcel.readInt()
     ){
     }
 
@@ -19,11 +23,15 @@ class User (
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(email)
-        parcel.writeString(password)
+        parcel.writeString(name)
+        parcel.writeString(lastname)
+        if(countScans != null){
+            parcel.writeInt(countScans)
+        }
     }
 
     override fun toString(): String {
-        return "User(email=$email, password=$password)"
+        return "User(email=$email, nombre=$name $lastname, )"
     }
 
     companion object CREATOR : Parcelable.Creator<User> {
