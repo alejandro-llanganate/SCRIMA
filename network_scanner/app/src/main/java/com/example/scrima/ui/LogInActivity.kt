@@ -39,6 +39,7 @@ class LogInActivity : AppCompatActivity() {
         val userEmail = findViewById<EditText>(R.id.input_login_email)
         val userPassword = findViewById<EditText>(R.id.input_login_password)
 
+
         // Login with email and password
         findViewById<Button>(R.id.btn_main_login)
             .setOnClickListener {
@@ -49,24 +50,6 @@ class LogInActivity : AppCompatActivity() {
                     showSimpleToast("Ingrese los datos requeridos")
                 }
             }
-
-        // Login with Google Auth
-        findViewById<Button>(R.id.btn_google_signin)
-            .setOnClickListener {
-               signInWithUserGoogleAcount(userEmail.text.toString(), userPassword.text.toString())
-            }
-    }
-
-    fun signInWithUserGoogleAcount(userEmail: String, userPassword: String){
-        FirebaseApp.initializeApp(this)
-        // Configure Google Sign In
-        val googleConf = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken("378779346163-67pme07hml2vmhlrgekv5j1buklbvvr4.apps.googleusercontent.com")
-            .requestEmail()
-            .build()
-        val googleClient = GoogleSignIn.getClient(this, googleConf)
-        googleClient.signOut()
-        startActivityForResult(googleClient.signInIntent, GOOGLE_SIGN_IN)
     }
 
     fun signInWithEmailPasswordAuth(userEmail: String, userPassword: String) {
@@ -78,7 +61,7 @@ class LogInActivity : AppCompatActivity() {
             if (it.isSuccessful) {
                 openActivityWithParams(
                     this, HomeActivity::class.java, arrayListOf(
-                        Pair("user", User(userEmail, userPassword)),
+                        Pair("user", User(userEmail, userPassword, null, 0)),
                         Pair("type", "ProviderType.BASIC")
                     )
                 )
@@ -137,7 +120,7 @@ class LogInActivity : AppCompatActivity() {
                             if(it.isSuccessful){
                                 openActivityWithParams(
                                     this, HomeActivity::class.java, arrayListOf(
-                                        Pair("user", User(account.email, null)),
+                                        Pair("user", User(account.email, null, null, null)),
                                         Pair("type", "ProviderType.GOOGLE")
                                     )
                                 )

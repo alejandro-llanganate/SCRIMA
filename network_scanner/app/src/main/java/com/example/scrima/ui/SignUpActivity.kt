@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.example.scrima.R
 import com.example.scrima.entities.User
+import com.example.scrima.general.FirebaseConnection
 import com.example.scrima.general.Validators
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
@@ -35,15 +36,33 @@ class SignUpActivity : AppCompatActivity() {
                 val userEmail = findViewById<EditText>(R.id.input_signup_email)
                 val userPassword = findViewById<EditText>(R.id.input_signup_password)
                 val userPasswordConfirmation = findViewById<EditText>(R.id.input_signup_repeat_password)
-                if(Validators.validateNotBlankInputs(arrayListOf(userEmail, userPassword, userPasswordConfirmation))){
+                val userName = findViewById<EditText>(R.id.input_singup_name)
+                val userLastname = findViewById<EditText>(R.id.input_signup_lastname)
+
+                if(Validators.validateNotBlankInputs(
+                        arrayListOf(userEmail, userPassword, userPasswordConfirmation, userName, userLastname)
+                    )){
                     if (userPassword.text.toString() == userPasswordConfirmation.text.toString()){
                         auth.createUserWithEmailAndPassword(
                             userEmail.text.toString(),
                             userPasswordConfirmation.text.toString()
                         ).addOnCompleteListener{
                             if(it.isSuccessful){
+                                val newUser = hashMapOf<String, Any>(
+                                    "username" to userName.text.toString(),
+                                    "lastname" to userLastname.text.toString(),
+                                    "email" to userEmail.text.toString(),
+                                    "totalScans" to 0,
+                                    "uid" to auth.currentUser!!.uid,
+                                )
+
                                 showSimpleDialog("Inicio de sesión", "Se ha registrado correctamente")
-                                openActivity(this, LogInActivity::class.java)
+                                FirebaseConnection.getInstance()
+                                    .collection("users")
+                                    .add(newUser)
+                                    .addOnSuccessListener {
+                                        openActivity(this, LogInActivity::class.java)
+                                    }
                             }else{
                                 showSimpleToast("No se ha podido crear este usuario")
                             }

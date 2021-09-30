@@ -32,17 +32,11 @@ class HomeActivity : AppCompatActivity() {
         // Get Params
         val user = intent.getParcelableExtra<User>("user")
         val  type = intent.getStringExtra("type")
-        findViewById<TextView>(R.id.tv_email).setText(user.toString())
-        findViewById<TextView>(R.id.tv_method).setText(type)
 
         // According to bottom vavegation
         setFragmentsForNavigation()
 
-        // Sign Out
-        findViewById<Button>(R.id.btn_sign_out).setOnClickListener {
-            auth.signOut()
-            onBackPressed()
-        }
+
     }
 
     fun setFragmentsForNavigation(){
