@@ -35,8 +35,6 @@ class HomeActivity : AppCompatActivity() {
 
         // According to bottom vavegation
         setFragmentsForNavigation()
-
-
     }
 
     override fun onResume() {

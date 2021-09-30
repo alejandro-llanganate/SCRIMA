@@ -9,7 +9,9 @@ import android.widget.Button
 import android.widget.TextView
 import com.example.scrima.R
 import com.example.scrima.general.FirebaseConnection
+import com.example.scrima.general.Settings
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
 
 class ResultsScannerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,12 +50,27 @@ class ResultsScannerActivity : AppCompatActivity() {
             "macAddress" to network.macAddress.toString(),
             "ssid" to network.ssid.toString(),
             "rssi" to network.rssi.toString(),
-            "uid" to auth.currentUser!!.uid
+            "uid" to auth.currentUser!!.uid,
+            "timestamp" to FieldValue.serverTimestamp()
         )
 
         FirebaseConnection.getInstance()
             .collection("gateways")
             .add(newGateway)
+
+        FirebaseConnection.getInstance()
+            .collection("users")
+            .whereEqualTo("uid", auth.currentUser!!.uid)
+            .get()
+            .addOnSuccessListener { result ->
+                for(document in result){
+                    FirebaseConnection.getInstance().collection("users").document(document.id)
+                        .update(mapOf(
+                            "totalScans" to "${document.get("totalScans")}".toInt()+1
+                        ))
+                }
+                Settings.showMessage(this, "Se ha actualizado correctamente")
+            }
     }
 
     fun openActivity(context: Context, classRef: Class<*>) {

@@ -5,7 +5,7 @@ import android.os.Parcelable
 
 class ScanRecord (
     val ipGateway : String?,
-    val company: String?,
+    val addressMAC: String?,
     val date : String?,
     val time: String?
     ) :Parcelable {
@@ -23,13 +23,13 @@ class ScanRecord (
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(ipGateway)
-        parcel.writeString(company)
+        parcel.writeString(addressMAC)
         parcel.writeString(date)
         parcel.writeString(time)
     }
 
     override fun toString(): String {
-        return "ScanRecord(gateway=$ipGateway, empresa=$company, fecha=$date, hora=$time)"
+        return "ScanRecord(gateway=$ipGateway, empresa=$addressMAC, fecha=$date, hora=$time)"
     }
 
     companion object CREATOR : Parcelable.Creator<ScanRecord> {

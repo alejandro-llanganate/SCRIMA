@@ -44,7 +44,7 @@ class ScanRecordAdapter(
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val scanRecord = records[position]
         holder.ipAddressTextView.text = scanRecord.ipGateway
-        holder.companyTextView.text = scanRecord.company
+        holder.companyTextView.text = scanRecord.addressMAC
         holder.dateTextView.text = scanRecord.date
         holder.timeTextView.text = scanRecord.time
     }
