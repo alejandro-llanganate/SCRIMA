@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.scrima.R
 import com.example.scrima.entities.NetworkScanner
@@ -27,10 +28,13 @@ class ScanFragment : Fragment(R.layout.fragment_scan) {  override fun onCreate(s
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_scan, container, false)
+
+        view.findViewById<ProgressBar>(R.id.progressBar_scan).visibility = View.INVISIBLE
+        view.findViewById<TextView>(R.id.tv_scan).visibility = View.INVISIBLE
+
         view.findViewById<Button>(R.id.btn_scan_network).setOnClickListener {
             view.findViewById<ProgressBar>(R.id.progressBar_scan).visibility = View.VISIBLE
-            view.findViewById<ProgressBar>(R.id.tv_scan).visibility = View.VISIBLE
-            Thread.sleep(8000)
+            view.findViewById<TextView>(R.id.tv_scan).visibility = View.VISIBLE
             if(container !=null){
                 val information = NetworkScanner.getGatewayInformation(container.context)
                 openActivityWithParams(container.context, ResultsScannerActivity::class.java, arrayListOf(
