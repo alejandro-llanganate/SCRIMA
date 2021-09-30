@@ -47,15 +47,28 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 }
             }
 
-        // Sign Out
+             // Sign Out
             view.findViewById<Button>(R.id.btn_signout).setOnClickListener {
                 auth.signOut()
                 if (container != null) {
                     openActivity(container.context, LogInActivity::class.java)
                 }
             }
+
+            // Edit Users information
+            view.findViewById<Button>(R.id.btn_edit_user_profile).setOnClickListener {
+                openActivity(container!!.context, EditUserProfileActivity::class.java)
+            }
+
         return view
     }
+
+    override fun onResume() {
+        super.onResume()
+        requireFragmentManager()!!.beginTransaction().detach(this).attach(this).commit();
+
+    }
+
     fun openActivity(context: Context, classRef: Class<*>) {
         val intentExplicito = Intent(
             context,

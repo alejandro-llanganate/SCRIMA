@@ -39,20 +39,34 @@ class HomeActivity : AppCompatActivity() {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        setFragmentsForNavigation()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        setFragmentsForNavigation()
+
+    }
+
     fun setFragmentsForNavigation(){
         findViewById<BottomNavigationView>(R.id.bottomNavigationView)
             .setOnItemSelectedListener {
                 when(it.itemId) {
                     R.id.navigation_history -> {
                         setCurrentFragment(idContainerView, recordsFragment)
+                        setTitle("Historial")
                         true
                     }
                     R.id.navigation_scan -> {
                         setCurrentFragment(idContainerView, scanFragment)
+                        setTitle("Scanner")
                         true
                     }
                     R.id.navigation_profile -> {
                         setCurrentFragment(idContainerView, profileFragment)
+                        setTitle("Perfil")
                         true
                     }
                     else -> false

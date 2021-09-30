@@ -1,38 +1,24 @@
 package com.example.scrima.general
-
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
 import android.widget.Button
-import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
-import com.example.scrima.ui.LogInActivity
+import android.widget.EditText
+import android.widget.Toast
 
-class Settings  : AppCompatActivity()  {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
+class Settings {
     companion object {
-    }
-
-    fun onClickToOpenActivity(idButton: Int, context: Context, classRef: Class<LogInActivity>){
-        findViewById<Button>(idButton).setOnClickListener {
-            val intentExplicito = Intent(
-                context,
-                classRef
-            )
-            startActivity(intentExplicito)
+        fun clearInputs(inputs: ArrayList<EditText>) {
+            inputs.forEach {
+                    input ->
+                input.setText("")
+            }
         }
-    }
-
-    fun openActivityWithoutParams(context : Context, clase: Class<LogInActivity>){
-        val intentExplicito = Intent(
-            context,
-            clase
-        )
-        startActivity(intentExplicito)
+        fun showMessage(context: Context,message: String){
+            Toast.makeText(
+                context,
+                message,
+                Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 }
